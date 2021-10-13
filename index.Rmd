@@ -31,7 +31,7 @@ I get a ton of questions from about factor variables in regression models. Two o
 
 I'm going to show you what is the deal with factor variables, in hopes that it will help you in your research, and that you can pass on the intuition when a colleague comes to you asking strange questions about factor variables.
 
-## Learning goals:
+## Learning goals
 
 1. Understand why factor variables get handled in a special way
 2. Learn about the contrasts that are built into R
