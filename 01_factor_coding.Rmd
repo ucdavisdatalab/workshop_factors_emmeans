@@ -26,4 +26,8 @@ But why are the results reported in such a weird way?
  
 ## The linear algebra explanation
 Imagine that your factor variable has three levels, and call them A, B, and C. You're estimating how a continuous variable (like chick weight) depends on the factor level (like chick feed). You typically use an intercept to represent the overall average weight (aka the "grand mean"), so that you can then test whether any factor levels are different from average. This leads to a model where the grand mean $\mu$ and the factor levels $A$, $B$, and $C$ represent the average weights, with some random noise added in, too. That's written like this: 
+
 ![System of equations](images/eq1.png)
+<img src="images/eq1.png" alt="drawing" width="140"/>
+
+The 
