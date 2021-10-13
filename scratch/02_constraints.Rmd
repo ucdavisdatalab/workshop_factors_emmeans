@@ -7,6 +7,7 @@ There are only a few constraints (R calls them "contrasts") to know:
 The default. Sets a level of the factor to have zero effect. You saw an example of the design matrix just a moment ago. Take a look at the design matrix according to R:
 
 ```{r}
+# look at the default coding of feed
 contrasts( chickwts$feed )
 ```
 
@@ -17,7 +18,9 @@ You can do this yourself by removing the intercept. You gain interpretability, b
 <img src="images/eq5.png" alt="one hot encoding design matrix" width="400"/>
 
 ```{r}
-summary( lm( weight ~ feed - 1, data=chickwts ))
+# fit a version of the model for chick weight that has no intercept
+lm_nointercept = lm( weight ~ feed - 1, data=chickwts )
+summary( lm_nointercept )
 ```
 
 ## `contr.sum`: sum-to-zero constraints
@@ -30,9 +33,16 @@ You can set the contrasts as an attribute of the data or pass it to the `lm()` f
 
 
 ```{r}
+# set the feed variable to use sum-to-zero constraint
 contrasts( chickwts$feed ) = contr.sum
 chickwts$feed
-summary( lm(weight ~ feed, data=chickwts) )
+
+# re-fit the linear model 
+lm_stz = lm(weight ~ feed, data=chickwts)
+summary( lm_stz )
+
+# calculate the missing coefficient
+sum( coef(lm_stz)[[1]] - sum( coef(lm_stz)[2:6]) )
 ```
 
 ## `contr.poly`
@@ -42,11 +52,13 @@ This one is for ordered factors, and gets a bit more complicated. Beyond today's
 Used in special situations that I wont get into, but you can infer their workings by looking at how they set up the design matrix for our example:
 
 ```{r}
+# set the helmert contrast and look at its design
 contrasts( chickwts$feed ) = contr.helmert
 chickwts$feed
 ```
 
 ```{r}
+# set feed to use the SAS contrast and look at its design
 contrasts( chickwts$feed ) = contr.SAS
 chickwts$feed
 ```

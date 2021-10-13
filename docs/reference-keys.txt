@@ -9,3 +9,6 @@ one-hot-encoding
 contr.sum-sum-to-zero-constraints
 contr.poly
 contr.helmert-and-contr.sas
+emmeans
+simplest-case-single-factor-variable
+a-slightly-more-complex-model

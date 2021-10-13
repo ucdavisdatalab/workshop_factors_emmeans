@@ -159,6 +159,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4" data-path="constraints.html"><a href="constraints.html#contr.poly"><i class="fa fa-check"></i><b>2.4</b> <code>contr.poly</code></a></li>
 <li class="chapter" data-level="2.5" data-path="constraints.html"><a href="constraints.html#contr.helmert-and-contr.sas"><i class="fa fa-check"></i><b>2.5</b> <code>contr.helmert</code> and <code>contr.SAS</code></a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="emmeans.html"><a href="emmeans.html"><i class="fa fa-check"></i><b>3</b> <code>emmeans</code></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="emmeans.html"><a href="emmeans.html#simplest-case-single-factor-variable"><i class="fa fa-check"></i><b>3.1</b> Simplest case: single factor variable</a></li>
+<li class="chapter" data-level="3.2" data-path="emmeans.html"><a href="emmeans.html#a-slightly-more-complex-model"><i class="fa fa-check"></i><b>3.2</b> A slightly more complex model</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -179,8 +184,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="factor-coding" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Factor coding</h1>
 <p><code>factor</code> is R’s name for a categorical variable. Let’s see an example. The <code>chickwts</code> data set is built into R, and records the results of a 1948 experiment where chicks were fed on different diets, and their weights were measured in grams at six weeks of age.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-coding.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( chickwts )</span>
-<span id="cb1-2"><a href="factor-coding.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( chickwts )</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-coding.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the chickwts dataset and look at the top rows</span></span>
+<span id="cb1-2"><a href="factor-coding.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( chickwts )</span>
+<span id="cb1-3"><a href="factor-coding.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( chickwts )</span></code></pre></div>
 <pre><code>##   weight      feed
 ## 1    179 horsebean
 ## 2    160 horsebean
@@ -188,7 +194,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4    227 horsebean
 ## 5    217 horsebean
 ## 6    168 horsebean</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="factor-coding.html#cb3-1" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="factor-coding.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the feed variable - it&#39;s a factor</span></span>
+<span id="cb3-2"><a href="factor-coding.html#cb3-2" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
 <pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
 ##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
 ## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
@@ -201,11 +208,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [64] casein    casein    casein    casein    casein    casein    casein   
 ## [71] casein   
 ## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="factor-coding.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="factor-coding.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a boxplot of weight vs. feed</span></span>
+<span id="cb5-2"><a href="factor-coding.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span></code></pre></div>
 <p><img src="01_factor_coding_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>There are six different types of feed: casein, horsebean, linseed, meatmeal, soybean, and sunflower. Now see what happens when I fit a linear model to this data:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="factor-coding.html#cb6-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">=</span> <span class="fu">lm</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span>
-<span id="cb6-2"><a href="factor-coding.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm1 )</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="factor-coding.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a linear model using the default coding, look at its summary</span></span>
+<span id="cb6-2"><a href="factor-coding.html#cb6-2" aria-hidden="true" tabindex="-1"></a>lm_default <span class="ot">=</span> <span class="fu">lm</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span>
+<span id="cb6-3"><a href="factor-coding.html#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_default )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ feed, data = chickwts)
@@ -249,7 +258,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>By default, R will drop the column that represents the first level of each factor. This is called a “treatment contrast” (more on contrasts later) or the set-to-zero constraint (because it is like constraining the <span class="math inline">\(A\)</span> effect to be zero):</p>
 <p><img src="images/eq4.png" alt="set to zero constraint" width="400"/></p>
 <p>Now we’ll look back at the model summary table, where the “first” level of the factor (casein) doesn’t appear. That’s because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the <code>(Intercept)</code> and <code>feedhorsebean</code> coefficients, as you would predict from the design matrix of the set-to-zero constraint:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-coding.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm1 )</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-coding.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look again at the summary table for lm_default</span></span>
+<span id="cb8-2"><a href="factor-coding.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_default )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ feed, data = chickwts)
@@ -272,7 +282,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 54.85 on 65 degrees of freedom
 ## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
 ## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
-
 </div>
 </div>
             </section>

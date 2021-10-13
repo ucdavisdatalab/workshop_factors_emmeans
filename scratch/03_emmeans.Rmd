@@ -1,0 +1,68 @@
+# `emmeans`
+Rather than think at all about design matrices, you can use the `emmeans` package to extract fitted factor levels and differences from your model. This works with a lot of modeling packages, including `lme4` and `brms`.
+
+```{r}
+# import the package emmeans
+library( "emmeans" )
+```
+
+## Simplest case: single factor variable
+We can see the basic functionality even with an ultra-simple model like the ones we've made for chicken feed:
+
+```{r}
+# look at the mean fits for the default model
+emmeans( lm_default, specs= ~feed )
+```
+
+Now the factor coding doesn't matter - we get the same result for the model with no intercept and the one using a sum-to-zero constraint:
+
+```{r}
+# look at the mean fits for the no intercept model
+emmeans( lm_nointercept, specs= ~feed )
+
+# look at the mean fits for the sum-to-zero model
+emmeans( lm_stz, specs= ~feed )
+```
+
+A slightly more complex result comes when you look at differences between levels:
+
+```{r}
+# use emmeans to calculate differences between feed levels
+emmeans( lm_default, specs= pairwise ~ feed )
+```
+
+
+## A slightly more complex model
+
+In order to illustrate a couple other features of `emmeans`, we must have a more complex model. Here, I'll use the `mtcars` data set, which contains various measurements of cars by *Motor Trend* magazine from 1974. All of the measurements are numeric, but I will recode a few as factors: number of cylinders (`cyl`), number of drive gears (`gear`), and whether the transmission is manual or automatic (`am`). My output will be miles per gallon (`mpg`), and I'll also use cylinder displacement (`disp`) as a non-factor input
+
+```{r}
+# load the mtcars data
+data( mtcars )
+
+# code cyl, gear, and am as factors:
+mtcars$cyl = as.factor( mtcars$cyl )
+mtcars$am = as.factor( mtcars$am )
+
+# fit a model for mpg using cyl*disp*am
+lm_mpg = lm( mpg ~ cyl*disp*am, data=mtcars )
+
+# show the model summary
+summary( lm_mpg )
+```
+
+
+This model allows illustration of some other features of emmeans. For instance, how to stratify results based on another factor, and how to calculate model slopes at different levels of an interaction:
+
+```{r}
+# look at mileage for the different cylinder counts,
+# but consider auto and manual transmission carss separately:
+emmeans( lm_mpg, specs = ~cyl|am )
+
+# calculate the slope of disp at different cyl, am levels:
+emtrends( lm_mpg, specs = ~ cyl|am, var="disp")
+```
+
+And there's a lot more to `emmeans` than that, but we have to stop here.
+
+
