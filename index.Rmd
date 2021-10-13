@@ -3,8 +3,8 @@ title: Factor coding, contrasts, and the `emmeans` package
 author: Wesley Brooks
 date: "`r Sys.Date()`"
 
-github-repo: ucdavisdatalab/YOUR_REPO
-url: "https://ucdavisdatalab.github.io/YOUR_REPO/"
+github-repo: wes-brooks/workshop_factors_emmeans
+url: "https://wes-brooks.github.io/workshop_factors_emmeans/"
 
 site: "bookdown::bookdown_site"
 knit: "bookdown::render_book"
@@ -19,10 +19,21 @@ output:
           <li><a href="./" style="font-size: 18px">Factor coding, contrasts, and the `emmeans` package</a></li>
         collapse: section
       sharing: no
-      view: https://github.com/ucdavisdatalab/workshop_factors_emmeans/blob/master/%s
-      edit: https://github.com/ucdavisdatalab/workshop_factors_emmeans/edit/master/%s
+      view: https://github.com/wes-brooks/workshop_factors_emmeans/blob/master/%s
+      edit: https://github.com/wes-brooks/workshop_factors_emmeans/edit/master/%s
 ---
 
 # Overview {-}
 
-YOUR DESCRIPTION, LEARNING GOALS, PREREQUISITES, ETC
+I get a ton of questions from about factor variables in regression models. Two of the most common are:
+- Why is there a factor level missing from the results table for my regression model?
+- Why does my Stan model fail to "mix" or converge when this factor variable is included?
+
+I'm going to show you what is the deal with factor variables, in hopes that it will help you in your research, and that you can pass on the intuition when a colleague comes to you asking strange questions about factor variables.
+
+## Learning goals:
+
+1. Understand why factor variables get handled in a special way
+2. Learn about the contrasts that are built into R
+3. Demonstrate the basics of the `emmeans` package for analyzing factors in model fits
+

@@ -1,0 +1,29 @@
+# Factor coding
+
+`factor` is R's name for a categorical variable. Let's see an example. The `chickwts` data set is built into R, and records the results of a 1948 experiment where chicks were fed on different diets, and their weights were measured in grams at six weeks of age.
+
+```{r}
+data( chickwts )
+head( chickwts )
+chickwts$feed
+boxplot( weight ~ feed, data=chickwts )
+```
+
+
+There are six different types of feed: casein, horsebean, linseed, meatmeal, soybean, and sunflower. Now see what happens when I fit a linear model to this data:
+
+```{r}
+lm1 = lm( weight ~ feed, data=chickwts )
+summary( lm1 )
+```
+The casein feed isn't shown in the results! And most of the feed types that are shown would give the chicks negative weights, which is clearly absurd. What gives?!
+ 
+# How factors are coded in a model
+ 
+The short answer is that the intercept here is actually the average weight of chicks on the casein feed, and everything else is the difference from casein. So based on the first two lines of the result table, chicks on casein feed weigh 323 grams on average, and those on the horsebean feed weigh 163 grams *less than that*, or 160 grams. Those numbers shold make sense based on the boxplot.
+
+But why are the results reported in such a weird way?
+ 
+## The linear algebra explanation
+Imagine that your factor variable has three levels, and call them A, B, and C. You're estimating how a continuous variable (like chick weight) depends on the factor level (like chick feed). You typically use an intercept to represent the overall average weight (aka the "grand mean"), so that you can then test whether any factor levels are different from average. This leads to a model where the grand mean $\mu$ and the factor levels $A$, $B$, and $C$ represent the average weights, with some random noise added in, too. That's written like this: 
+![System of equations](images/eq1.png)

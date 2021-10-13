@@ -1,0 +1,4 @@
+learning-goals
+factor-coding
+how-factors-are-coded-in-a-model
+the-linear-algebra-explanation
