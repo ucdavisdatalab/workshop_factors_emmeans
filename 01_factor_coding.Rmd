@@ -37,7 +37,7 @@ Imagine that your factor variable has three levels, and call them A, B, and C. Y
 
 This system of equations can't be solved (too many unknowns) so we work with the average of each group (A, B, C). To do so, we assume that the average error is zero within each group, so the group means can each be written as the sum of the grand mean and the group effect: 
 
-<img src="images/eq2.png" alt="overspecified mean model" width="200"/>
+<img src="images/eq2.png" alt="overspecified mean model" width="400"/>
 
 Now we are down to three equations with four unknowns - close but not good enough! Another way to write that same system of equations is this, which will be a bit more productive going forward:
 
@@ -51,13 +51,7 @@ By default, R will drop the column that represents the first level of each facto
 
 <img src="images/eq4.png" alt="set to zero constraint" width="400"/>
 
-Now we'll look back at the model summary table, where the "first" level of the factor (casein) doesn't appear. That's because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the `(Intercept)` and `feedhorsebean` coefficients, as you would predict from the design matrix of the set-to-zero constraint:
-
-```{r}
-# look again at the summary table for lm_default
-summary( lm_default )
-```
-
+Now we'll look back at the model summary table, where the "first" level of the factor (casein) doesn't appear. That's because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the `(Intercept)` and `feedhorsebean` coefficients, as you would predict from the design matrix of the set-to-zero constraint.
 
 # Constraints
 

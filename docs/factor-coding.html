@@ -247,7 +247,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Imagine that your factor variable has three levels, and call them A, B, and C. You’re estimating how a continuous variable (like chick weight) depends on the factor level (like chick feed). You typically use an intercept to represent the overall average weight (aka the “grand mean”), so that you can then test whether any factor levels are different from average. This leads to a model where the grand mean <span class="math inline">\(\mu\)</span> and the factor levels <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> represent the average weights, with some random noise added in, too. That’s written like this:</p>
 <p><img src="images/eq1.png" alt="System of equations" width="200"/></p>
 <p>This system of equations can’t be solved (too many unknowns) so we work with the average of each group (A, B, C). To do so, we assume that the average error is zero within each group, so the group means can each be written as the sum of the grand mean and the group effect:</p>
-<p><img src="images/eq2.png" alt="overspecified mean model" width="200"/></p>
+<p><img src="images/eq2.png" alt="overspecified mean model" width="400"/></p>
 <p>Now we are down to three equations with four unknowns - close but not good enough! Another way to write that same system of equations is this, which will be a bit more productive going forward:</p>
 <p><img src="images/eq3.png" alt="overspecified mean model - linear system" width="400"/></p>
 <p>We have to reduce the number of unknowns by one. We do so by introducing a constraint on the coefficients, which allows us to remove a column from the “design matrix” in the figure above.</p>
@@ -257,31 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.2</span> The default</h2>
 <p>By default, R will drop the column that represents the first level of each factor. This is called a “treatment contrast” (more on contrasts later) or the set-to-zero constraint (because it is like constraining the <span class="math inline">\(A\)</span> effect to be zero):</p>
 <p><img src="images/eq4.png" alt="set to zero constraint" width="400"/></p>
-<p>Now we’ll look back at the model summary table, where the “first” level of the factor (casein) doesn’t appear. That’s because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the <code>(Intercept)</code> and <code>feedhorsebean</code> coefficients, as you would predict from the design matrix of the set-to-zero constraint:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-coding.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look again at the summary table for lm_default</span></span>
-<span id="cb8-2"><a href="factor-coding.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_default )</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = weight ~ feed, data = chickwts)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -123.909  -34.413    1.571   38.170  103.091 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    323.583     15.834  20.436  &lt; 2e-16 ***
-## feedhorsebean -163.383     23.485  -6.957 2.07e-09 ***
-## feedlinseed   -104.833     22.393  -4.682 1.49e-05 ***
-## feedmeatmeal   -46.674     22.896  -2.039 0.045567 *  
-## feedsoybean    -77.155     21.578  -3.576 0.000665 ***
-## feedsunflower    5.333     22.393   0.238 0.812495    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 54.85 on 65 degrees of freedom
-## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
-## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
+<p>Now we’ll look back at the model summary table, where the “first” level of the factor (casein) doesn’t appear. That’s because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the <code>(Intercept)</code> and <code>feedhorsebean</code> coefficients, as you would predict from the design matrix of the set-to-zero constraint.</p>
 </div>
 </div>
             </section>

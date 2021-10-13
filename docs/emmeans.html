@@ -184,13 +184,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="emmeans" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> <code>emmeans</code></h1>
 <p>Rather than think at all about design matrices, you can use the <code>emmeans</code> package to extract fitted factor levels and differences from your model. This works with a lot of modeling packages, including <code>lme4</code> and <code>brms</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="emmeans.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the package emmeans</span></span>
-<span id="cb24-2"><a href="emmeans.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;emmeans&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="emmeans.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import the package emmeans</span></span>
+<span id="cb22-2"><a href="emmeans.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( <span class="st">&quot;emmeans&quot;</span> )</span></code></pre></div>
 <div id="simplest-case-single-factor-variable" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Simplest case: single factor variable</h2>
 <p>We can see the basic functionality even with an ultra-simple model like the ones we’ve made for chicken feed:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="emmeans.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the default model</span></span>
-<span id="cb25-2"><a href="emmeans.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_default, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="emmeans.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the default model</span></span>
+<span id="cb23-2"><a href="emmeans.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_default, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
 <pre><code>##  feed      emmean   SE df lower.CL upper.CL
 ##  casein       324 15.8 65      292      355
 ##  horsebean    160 17.3 65      126      195
@@ -201,8 +201,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>Now the factor coding doesn’t matter - we get the same result for the model with no intercept and the one using a sum-to-zero constraint:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="emmeans.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the no intercept model</span></span>
-<span id="cb27-2"><a href="emmeans.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_nointercept, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="emmeans.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the no intercept model</span></span>
+<span id="cb25-2"><a href="emmeans.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_nointercept, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
 <pre><code>##  feed      emmean   SE df lower.CL upper.CL
 ##  casein       324 15.8 65      292      355
 ##  horsebean    160 17.3 65      126      195
@@ -212,8 +212,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  sunflower    329 15.8 65      297      361
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="emmeans.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the sum-to-zero model</span></span>
-<span id="cb29-2"><a href="emmeans.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_stz, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="emmeans.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the mean fits for the sum-to-zero model</span></span>
+<span id="cb27-2"><a href="emmeans.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_stz, <span class="at">specs=</span> <span class="sc">~</span>feed )</span></code></pre></div>
 <pre><code>##  feed      emmean   SE df lower.CL upper.CL
 ##  casein       324 15.8 65      292      355
 ##  horsebean    160 17.3 65      126      195
@@ -224,8 +224,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>A slightly more complex result comes when you look at differences between levels:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="emmeans.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use emmeans to calculate differences between feed levels</span></span>
-<span id="cb31-2"><a href="emmeans.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_default, <span class="at">specs=</span> pairwise <span class="sc">~</span> feed )</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="emmeans.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use emmeans to calculate differences between feed levels</span></span>
+<span id="cb29-2"><a href="emmeans.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_default, <span class="at">specs=</span> pairwise <span class="sc">~</span> feed )</span></code></pre></div>
 <pre><code>## $emmeans
 ##  feed      emmean   SE df lower.CL upper.CL
 ##  casein       324 15.8 65      292      355
@@ -260,18 +260,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="a-slightly-more-complex-model" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> A slightly more complex model</h2>
 <p>In order to illustrate a couple other features of <code>emmeans</code>, we must have a more complex model. Here, I’ll use the <code>mtcars</code> data set, which contains various measurements of cars by <em>Motor Trend</em> magazine from 1974. All of the measurements are numeric, but I will recode a few as factors: number of cylinders (<code>cyl</code>), number of drive gears (<code>gear</code>), and whether the transmission is manual or automatic (<code>am</code>). My output will be miles per gallon (<code>mpg</code>), and I’ll also use cylinder displacement (<code>disp</code>) as a non-factor input</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="emmeans.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the mtcars data</span></span>
-<span id="cb33-2"><a href="emmeans.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( mtcars )</span>
-<span id="cb33-3"><a href="emmeans.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="emmeans.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># code cyl, gear, and am as factors:</span></span>
-<span id="cb33-5"><a href="emmeans.html#cb33-5" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl <span class="ot">=</span> <span class="fu">as.factor</span>( mtcars<span class="sc">$</span>cyl )</span>
-<span id="cb33-6"><a href="emmeans.html#cb33-6" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>am <span class="ot">=</span> <span class="fu">as.factor</span>( mtcars<span class="sc">$</span>am )</span>
-<span id="cb33-7"><a href="emmeans.html#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-8"><a href="emmeans.html#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a model for mpg using cyl*disp*am</span></span>
-<span id="cb33-9"><a href="emmeans.html#cb33-9" aria-hidden="true" tabindex="-1"></a>lm_mpg <span class="ot">=</span> <span class="fu">lm</span>( mpg <span class="sc">~</span> cyl<span class="sc">*</span>disp<span class="sc">*</span>am, <span class="at">data=</span>mtcars )</span>
-<span id="cb33-10"><a href="emmeans.html#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-11"><a href="emmeans.html#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co"># show the model summary</span></span>
-<span id="cb33-12"><a href="emmeans.html#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_mpg )</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="emmeans.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the mtcars data</span></span>
+<span id="cb31-2"><a href="emmeans.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( mtcars )</span>
+<span id="cb31-3"><a href="emmeans.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="emmeans.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># code cyl, gear, and am as factors:</span></span>
+<span id="cb31-5"><a href="emmeans.html#cb31-5" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>cyl <span class="ot">=</span> <span class="fu">as.factor</span>( mtcars<span class="sc">$</span>cyl )</span>
+<span id="cb31-6"><a href="emmeans.html#cb31-6" aria-hidden="true" tabindex="-1"></a>mtcars<span class="sc">$</span>am <span class="ot">=</span> <span class="fu">as.factor</span>( mtcars<span class="sc">$</span>am )</span>
+<span id="cb31-7"><a href="emmeans.html#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="emmeans.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a model for mpg using cyl*disp*am</span></span>
+<span id="cb31-9"><a href="emmeans.html#cb31-9" aria-hidden="true" tabindex="-1"></a>lm_mpg <span class="ot">=</span> <span class="fu">lm</span>( mpg <span class="sc">~</span> cyl<span class="sc">*</span>disp<span class="sc">*</span>am, <span class="at">data=</span>mtcars )</span>
+<span id="cb31-10"><a href="emmeans.html#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="emmeans.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># show the model summary</span></span>
+<span id="cb31-12"><a href="emmeans.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_mpg )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = mpg ~ cyl * disp * am, data = mtcars)
@@ -301,9 +301,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.9041, Adjusted R-squared:  0.8513 
 ## F-statistic: 17.14 on 11 and 20 DF,  p-value: 7.706e-08</code></pre>
 <p>This model allows illustration of some other features of emmeans. For instance, how to stratify results based on another factor, and how to calculate model slopes at different levels of an interaction:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="emmeans.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at mileage for the different cylinder counts,</span></span>
-<span id="cb35-2"><a href="emmeans.html#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but consider auto and manual transmission carss separately:</span></span>
-<span id="cb35-3"><a href="emmeans.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_mpg, <span class="at">specs =</span> <span class="sc">~</span>cyl<span class="sc">|</span>am )</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="emmeans.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at mileage for the different cylinder counts,</span></span>
+<span id="cb33-2"><a href="emmeans.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but consider auto and manual transmission carss separately:</span></span>
+<span id="cb33-3"><a href="emmeans.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>( lm_mpg, <span class="at">specs =</span> <span class="sc">~</span>cyl<span class="sc">|</span>am )</span></code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
 <pre><code>## am = 0:
 ##  cyl emmean    SE df lower.CL upper.CL
@@ -318,8 +318,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  8    13.88  6.47 20     0.37     27.4
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="emmeans.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the slope of disp at different cyl, am levels:</span></span>
-<span id="cb38-2"><a href="emmeans.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emtrends</span>( lm_mpg, <span class="at">specs =</span> <span class="sc">~</span> cyl<span class="sc">|</span>am, <span class="at">var=</span><span class="st">&quot;disp&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="emmeans.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the slope of disp at different cyl, am levels:</span></span>
+<span id="cb36-2"><a href="emmeans.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emtrends</span>( lm_mpg, <span class="at">specs =</span> <span class="sc">~</span> cyl<span class="sc">|</span>am, <span class="at">var=</span><span class="st">&quot;disp&quot;</span>)</span></code></pre></div>
 <pre><code>## am = 0:
 ##  cyl disp.trend      SE df lower.CL  upper.CL
 ##  4       0.0969 0.11763 20  -0.1484  0.342293

@@ -187,8 +187,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="contr.treatment" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> <code>contr.treatment</code></h2>
 <p>The default. Sets a level of the factor to have zero effect. You saw an example of the design matrix just a moment ago. Take a look at the design matrix according to R:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="constraints.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the default coding of feed</span></span>
-<span id="cb10-2"><a href="constraints.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed )</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="constraints.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># look at the default coding of feed</span></span>
+<span id="cb8-2"><a href="constraints.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed )</span></code></pre></div>
 <pre><code>##           horsebean linseed meatmeal soybean sunflower
 ## casein            0       0        0       0         0
 ## horsebean         1       0        0       0         0
@@ -201,9 +201,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.2</span> “One-hot” encoding</h2>
 <p>You can do this yourself by removing the intercept. You gain interpretability, but now the significance level is telling you whether the factor level mean is different from zero (you usually want to know if it is different from average).</p>
 <p><img src="images/eq5.png" alt="one hot encoding design matrix" width="400"/></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="constraints.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a version of the model for chick weight that has no intercept</span></span>
-<span id="cb12-2"><a href="constraints.html#cb12-2" aria-hidden="true" tabindex="-1"></a>lm_nointercept <span class="ot">=</span> <span class="fu">lm</span>( weight <span class="sc">~</span> feed <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>chickwts )</span>
-<span id="cb12-3"><a href="constraints.html#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_nointercept )</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="constraints.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit a version of the model for chick weight that has no intercept</span></span>
+<span id="cb10-2"><a href="constraints.html#cb10-2" aria-hidden="true" tabindex="-1"></a>lm_nointercept <span class="ot">=</span> <span class="fu">lm</span>( weight <span class="sc">~</span> feed <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>chickwts )</span>
+<span id="cb10-3"><a href="constraints.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_nointercept )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ feed - 1, data = chickwts)
@@ -232,9 +232,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>With sum-to-zero constraint, the factor level effects must add up to zero. Thus, the intercept represents the average of the fitted factor effects, and the final level is calculated by adding together all of the shown estimates.</p>
 <p><img src="images/eq6.png" alt="sum to zero design matrix" width="400"/></p>
 <p>You can set the contrasts as an attribute of the data or pass it to the <code>lm()</code> function.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="constraints.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the feed variable to use sum-to-zero constraint</span></span>
-<span id="cb14-2"><a href="constraints.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.sum</span>
-<span id="cb14-3"><a href="constraints.html#cb14-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="constraints.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the feed variable to use sum-to-zero constraint</span></span>
+<span id="cb12-2"><a href="constraints.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.sum</span>
+<span id="cb12-3"><a href="constraints.html#cb12-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
 <pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
 ##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
 ## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
@@ -255,9 +255,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## soybean      0    0    0    0    1
 ## sunflower   -1   -1   -1   -1   -1
 ## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="constraints.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># re-fit the linear model </span></span>
-<span id="cb16-2"><a href="constraints.html#cb16-2" aria-hidden="true" tabindex="-1"></a>lm_stz <span class="ot">=</span> <span class="fu">lm</span>(weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts)</span>
-<span id="cb16-3"><a href="constraints.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_stz )</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="constraints.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># re-fit the linear model </span></span>
+<span id="cb14-2"><a href="constraints.html#cb14-2" aria-hidden="true" tabindex="-1"></a>lm_stz <span class="ot">=</span> <span class="fu">lm</span>(weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts)</span>
+<span id="cb14-3"><a href="constraints.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm_stz )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ feed, data = chickwts)
@@ -280,8 +280,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 54.85 on 65 degrees of freedom
 ## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
 ## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="constraints.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the missing coefficient</span></span>
-<span id="cb18-2"><a href="constraints.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( <span class="fu">coef</span>(lm_stz)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">sum</span>( <span class="fu">coef</span>(lm_stz)[<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>]) )</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="constraints.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the missing coefficient</span></span>
+<span id="cb16-2"><a href="constraints.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>( <span class="fu">coef</span>(lm_stz)[[<span class="dv">1</span>]] <span class="sc">-</span> <span class="fu">sum</span>( <span class="fu">coef</span>(lm_stz)[<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>]) )</span></code></pre></div>
 <pre><code>## [1] 328.9167</code></pre>
 </div>
 <div id="contr.poly" class="section level2" number="2.4">
@@ -291,9 +291,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="contr.helmert-and-contr.sas" class="section level2" number="2.5">
 <h2><span class="header-section-number">2.5</span> <code>contr.helmert</code> and <code>contr.SAS</code></h2>
 <p>Used in special situations that I wont get into, but you can infer their workings by looking at how they set up the design matrix for our example:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="constraints.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the helmert contrast and look at its design</span></span>
-<span id="cb20-2"><a href="constraints.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.helmert</span>
-<span id="cb20-3"><a href="constraints.html#cb20-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="constraints.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set the helmert contrast and look at its design</span></span>
+<span id="cb18-2"><a href="constraints.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.helmert</span>
+<span id="cb18-3"><a href="constraints.html#cb18-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
 <pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
 ##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
 ## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
@@ -314,9 +314,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## soybean      0    0    0    4   -1
 ## sunflower    0    0    0    0    5
 ## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="constraints.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set feed to use the SAS contrast and look at its design</span></span>
-<span id="cb22-2"><a href="constraints.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.SAS</span>
-<span id="cb22-3"><a href="constraints.html#cb22-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="constraints.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set feed to use the SAS contrast and look at its design</span></span>
+<span id="cb20-2"><a href="constraints.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.SAS</span>
+<span id="cb20-3"><a href="constraints.html#cb20-3" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
 <pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
 ##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
 ## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
