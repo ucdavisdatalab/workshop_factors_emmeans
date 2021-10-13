@@ -2,3 +2,10 @@ learning-goals
 factor-coding
 how-factors-are-coded-in-a-model
 the-linear-algebra-explanation
+the-default
+constraints
+contr.treatment
+one-hot-encoding
+contr.sum-sum-to-zero-constraints
+contr.poly
+contr.helmert-and-contr.sas

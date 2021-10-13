@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="factor-coding.html"/>
-
+<link rel="next" href="the-default.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -148,6 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.1" data-path="how-factors-are-coded-in-a-model.html"><a href="how-factors-are-coded-in-a-model.html#the-linear-algebra-explanation"><i class="fa fa-check"></i><b>2.1</b> The linear algebra explanation</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="the-default.html"><a href="the-default.html"><i class="fa fa-check"></i><b>3</b> The default</a></li>
 </ul>
 
       </nav>
@@ -172,10 +173,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="the-linear-algebra-explanation" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> The linear algebra explanation</h2>
 <p>Imagine that your factor variable has three levels, and call them A, B, and C. You’re estimating how a continuous variable (like chick weight) depends on the factor level (like chick feed). You typically use an intercept to represent the overall average weight (aka the “grand mean”), so that you can then test whether any factor levels are different from average. This leads to a model where the grand mean <span class="math inline">\(\mu\)</span> and the factor levels <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> represent the average weights, with some random noise added in, too. That’s written like this:</p>
-<p><img src="images/eq1.png" alt="System of equations" />
-<img src="images/eq1.png" alt="drawing" width="140"/></p>
-<p>The</p>
-
+<p><img src="images/eq1.png" alt="System of equations" width="200"/></p>
+<p>This system of equations can’t be solved (too many unknowns) so we work with the average of each group (A, B, C). To do so, we assume that the average error is zero within each group, so the group means can each be written as the sum of the grand mean and the group effect:</p>
+<p><img src="images/eq2.png" alt="overspecified mean model" width="200"/></p>
+<p>Now we are down to three equations with four unknowns - close but not good enough! Another way to write that same system of equations is this, which will be a bit more productive going forward:</p>
+<p><img src="images/eq3.png" alt="overspecified mean model - linear system" width="400"/></p>
+<p>We have to reduce the number of unknowns by one, which means removing a column from the “design matrix” in the figure above.</p>
 </div>
 </div>
             </section>
@@ -183,8 +186,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="factor-coding.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="factor-coding.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-default.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

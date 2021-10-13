@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Factor coding | Factor coding, contrasts, and the emmeans package</title>
-  <meta name="description" content="1 Factor coding | Factor coding, contrasts, and the emmeans package" />
+  <title>2 Constraints | Factor coding, contrasts, and the emmeans package</title>
+  <meta name="description" content="2 Constraints | Factor coding, contrasts, and the emmeans package" />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Factor coding | Factor coding, contrasts, and the emmeans package" />
+  <meta property="og:title" content="2 Constraints | Factor coding, contrasts, and the emmeans package" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://wes-brooks.github.io/workshop_factors_emmeans/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="wes-brooks/workshop_factors_emmeans" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Factor coding | Factor coding, contrasts, and the emmeans package" />
+  <meta name="twitter:title" content="2 Constraints | Factor coding, contrasts, and the emmeans package" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="constraints.html"/>
+<link rel="prev" href="factor-coding.html"/>
+
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -176,19 +176,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="factor-coding" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Factor coding</h1>
-<p><code>factor</code> is R’s name for a categorical variable. Let’s see an example. The <code>chickwts</code> data set is built into R, and records the results of a 1948 experiment where chicks were fed on different diets, and their weights were measured in grams at six weeks of age.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="factor-coding.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( chickwts )</span>
-<span id="cb1-2"><a href="factor-coding.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( chickwts )</span></code></pre></div>
-<pre><code>##   weight      feed
-## 1    179 horsebean
-## 2    160 horsebean
-## 3    136 horsebean
-## 4    227 horsebean
-## 5    217 horsebean
-## 6    168 horsebean</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="factor-coding.html#cb3-1" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<div id="constraints" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Constraints</h1>
+<p>There are only a few constraints (R calls them “contrasts”) to know:</p>
+<div id="contr.treatment" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> <code>contr.treatment</code></h2>
+<p>The default. Sets a level of the factor to have zero effect. You saw an example of the design matrix just a moment ago. Take a look at the design matrix according to R:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="constraints.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed )</span></code></pre></div>
+<pre><code>##           horsebean linseed meatmeal soybean sunflower
+## casein            0       0        0       0         0
+## horsebean         1       0        0       0         0
+## linseed           0       1        0       0         0
+## meatmeal          0       0        1       0         0
+## soybean           0       0        0       1         0
+## sunflower         0       0        0       0         1</code></pre>
+</div>
+<div id="one-hot-encoding" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> “One-hot” encoding</h2>
+<p>You can do this yourself by removing the intercept. You gain interpretability, but now the significance level is telling you whether the factor level mean is different from zero (you usually want to know if it is different from average).</p>
+<p><img src="images/eq5.png" alt="one hot encoding design matrix" width="400"/></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="constraints.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">lm</span>( weight <span class="sc">~</span> feed <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data=</span>chickwts ))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ feed - 1, data = chickwts)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -123.909  -34.413    1.571   38.170  103.091 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## feedcasein      323.58      15.83  20.436  &lt; 2e-16 ***
+## feedhorsebean   160.20      17.35   9.236 1.91e-13 ***
+## feedlinseed     218.75      15.83  13.815  &lt; 2e-16 ***
+## feedmeatmeal    276.91      16.54  16.744  &lt; 2e-16 ***
+## feedsoybean     246.43      14.66  16.810  &lt; 2e-16 ***
+## feedsunflower   328.92      15.83  20.773  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 54.85 on 65 degrees of freedom
+## Multiple R-squared:  0.9629, Adjusted R-squared:  0.9595 
+## F-statistic: 281.4 on 6 and 65 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="contr.sum-sum-to-zero-constraints" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> <code>contr.sum</code>: sum-to-zero constraints</h2>
+<p>With sum-to-zero constraint, the factor level effects must add up to zero. Thus, the intercept represents the average of the fitted factor effects, and the final level is calculated by adding together all of the shown estimates.</p>
+<p><img src="images/eq6.png" alt="sum to zero design matrix" width="400"/></p>
+<p>You can set the contrasts as an attribute of the data or pass it to the <code>lm()</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="constraints.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.sum</span>
+<span id="cb14-2"><a href="constraints.html#cb14-2" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
 <pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
 ##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
 ## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
@@ -200,12 +237,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [57] meatmeal  meatmeal  meatmeal  casein    casein    casein    casein   
 ## [64] casein    casein    casein    casein    casein    casein    casein   
 ## [71] casein   
+## attr(,&quot;contrasts&quot;)
+##           [,1] [,2] [,3] [,4] [,5]
+## casein       1    0    0    0    0
+## horsebean    0    1    0    0    0
+## linseed      0    0    1    0    0
+## meatmeal     0    0    0    1    0
+## soybean      0    0    0    0    1
+## sunflower   -1   -1   -1   -1   -1
 ## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="factor-coding.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span></code></pre></div>
-<p><img src="01_factor_coding_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>There are six different types of feed: casein, horsebean, linseed, meatmeal, soybean, and sunflower. Now see what happens when I fit a linear model to this data:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="factor-coding.html#cb6-1" aria-hidden="true" tabindex="-1"></a>lm1 <span class="ot">=</span> <span class="fu">lm</span>( weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts )</span>
-<span id="cb6-2"><a href="factor-coding.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm1 )</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="constraints.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( <span class="fu">lm</span>(weight <span class="sc">~</span> feed, <span class="at">data=</span>chickwts) )</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ feed, data = chickwts)
@@ -215,63 +256,71 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## -123.909  -34.413    1.571   38.170  103.091 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    323.583     15.834  20.436  &lt; 2e-16 ***
-## feedhorsebean -163.383     23.485  -6.957 2.07e-09 ***
-## feedlinseed   -104.833     22.393  -4.682 1.49e-05 ***
-## feedmeatmeal   -46.674     22.896  -2.039 0.045567 *  
-## feedsoybean    -77.155     21.578  -3.576 0.000665 ***
-## feedsunflower    5.333     22.393   0.238 0.812495    
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  259.131      6.543  39.602  &lt; 2e-16 ***
+## feed1         64.452     14.490   4.448 3.47e-05 ***
+## feed2        -98.931     15.601  -6.341 2.48e-08 ***
+## feed3        -40.381     14.490  -2.787  0.00697 ** 
+## feed4         17.778     15.005   1.185  0.24042    
+## feed5        -12.703     13.641  -0.931  0.35519    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 54.85 on 65 degrees of freedom
 ## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
 ## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
-<p>The casein feed isn’t shown in the results! And most of the feed types that are shown would give the chicks negative weights, which is clearly absurd. What gives?!</p>
-<div id="how-factors-are-coded-in-a-model" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> How factors are coded in a model</h2>
-<p>The short answer is that the intercept here is actually the average weight of chicks on the casein feed, and everything else is the difference from casein. So based on the first two lines of the result table, chicks on casein feed weigh 323 grams on average, and those on the horsebean feed weigh 163 grams <em>less than that</em>, or 160 grams. Those numbers shold make sense based on the boxplot.</p>
-<p>But why are the results reported in such a weird way?</p>
-<div id="the-linear-algebra-explanation" class="section level3" number="1.1.1">
-<h3><span class="header-section-number">1.1.1</span> The linear algebra explanation</h3>
-<p>Imagine that your factor variable has three levels, and call them A, B, and C. You’re estimating how a continuous variable (like chick weight) depends on the factor level (like chick feed). You typically use an intercept to represent the overall average weight (aka the “grand mean”), so that you can then test whether any factor levels are different from average. This leads to a model where the grand mean <span class="math inline">\(\mu\)</span> and the factor levels <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(C\)</span> represent the average weights, with some random noise added in, too. That’s written like this:</p>
-<p><img src="images/eq1.png" alt="System of equations" width="200"/></p>
-<p>This system of equations can’t be solved (too many unknowns) so we work with the average of each group (A, B, C). To do so, we assume that the average error is zero within each group, so the group means can each be written as the sum of the grand mean and the group effect:</p>
-<p><img src="images/eq2.png" alt="overspecified mean model" width="200"/></p>
-<p>Now we are down to three equations with four unknowns - close but not good enough! Another way to write that same system of equations is this, which will be a bit more productive going forward:</p>
-<p><img src="images/eq3.png" alt="overspecified mean model - linear system" width="400"/></p>
-<p>We have to reduce the number of unknowns by one. We do so by introducing a constraint on the coefficients, which allows us to remove a column from the “design matrix” in the figure above.</p>
 </div>
+<div id="contr.poly" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> <code>contr.poly</code></h2>
+<p>This one is for ordered factors, and gets a bit more complicated. Beyond today’s scope.</p>
 </div>
-<div id="the-default" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> The default</h2>
-<p>By default, R will drop the column that represents the first level of each factor. This is called a “treatment contrast” (more on contrasts later) or the set-to-zero constraint (because it is like constraining the <span class="math inline">\(A\)</span> effect to be zero):</p>
-<p><img src="images/eq4.png" alt="set to zero constraint" width="400"/></p>
-<p>Now we’ll look back at the model summary table, where the “first” level of the factor (casein) doesn’t appear. That’s because it is set to zero in order to estimate the model. Since casein is swept into the intercept, we find the average weight of a chick fed on horsebeans by adding the <code>(Intercept)</code> and <code>feedhorsebean</code> coefficients, as you would predict from the design matrix of the set-to-zero constraint:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="factor-coding.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm1 )</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = weight ~ feed, data = chickwts)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -123.909  -34.413    1.571   38.170  103.091 
-## 
-## Coefficients:
-##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    323.583     15.834  20.436  &lt; 2e-16 ***
-## feedhorsebean -163.383     23.485  -6.957 2.07e-09 ***
-## feedlinseed   -104.833     22.393  -4.682 1.49e-05 ***
-## feedmeatmeal   -46.674     22.896  -2.039 0.045567 *  
-## feedsoybean    -77.155     21.578  -3.576 0.000665 ***
-## feedsunflower    5.333     22.393   0.238 0.812495    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 54.85 on 65 degrees of freedom
-## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
-## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
+<div id="contr.helmert-and-contr.sas" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> <code>contr.helmert</code> and <code>contr.SAS</code></h2>
+<p>Used in special situations that I wont get into, but you can infer their workings by looking at how they set up the design matrix for our example:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="constraints.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.helmert</span>
+<span id="cb18-2"><a href="constraints.html#cb18-2" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
+##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
+## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
+## [22] linseed   soybean   soybean   soybean   soybean   soybean   soybean  
+## [29] soybean   soybean   soybean   soybean   soybean   soybean   soybean  
+## [36] soybean   sunflower sunflower sunflower sunflower sunflower sunflower
+## [43] sunflower sunflower sunflower sunflower sunflower sunflower meatmeal 
+## [50] meatmeal  meatmeal  meatmeal  meatmeal  meatmeal  meatmeal  meatmeal 
+## [57] meatmeal  meatmeal  meatmeal  casein    casein    casein    casein   
+## [64] casein    casein    casein    casein    casein    casein    casein   
+## [71] casein   
+## attr(,&quot;contrasts&quot;)
+##           [,1] [,2] [,3] [,4] [,5]
+## casein      -1   -1   -1   -1   -1
+## horsebean    1   -1   -1   -1   -1
+## linseed      0    2   -1   -1   -1
+## meatmeal     0    0    3   -1   -1
+## soybean      0    0    0    4   -1
+## sunflower    0    0    0    0    5
+## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="constraints.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>( chickwts<span class="sc">$</span>feed ) <span class="ot">=</span> contr.SAS</span>
+<span id="cb20-2"><a href="constraints.html#cb20-2" aria-hidden="true" tabindex="-1"></a>chickwts<span class="sc">$</span>feed</span></code></pre></div>
+<pre><code>##  [1] horsebean horsebean horsebean horsebean horsebean horsebean horsebean
+##  [8] horsebean horsebean horsebean linseed   linseed   linseed   linseed  
+## [15] linseed   linseed   linseed   linseed   linseed   linseed   linseed  
+## [22] linseed   soybean   soybean   soybean   soybean   soybean   soybean  
+## [29] soybean   soybean   soybean   soybean   soybean   soybean   soybean  
+## [36] soybean   sunflower sunflower sunflower sunflower sunflower sunflower
+## [43] sunflower sunflower sunflower sunflower sunflower sunflower meatmeal 
+## [50] meatmeal  meatmeal  meatmeal  meatmeal  meatmeal  meatmeal  meatmeal 
+## [57] meatmeal  meatmeal  meatmeal  casein    casein    casein    casein   
+## [64] casein    casein    casein    casein    casein    casein    casein   
+## [71] casein   
+## attr(,&quot;contrasts&quot;)
+##           1 2 3 4 5
+## casein    1 0 0 0 0
+## horsebean 0 1 0 0 0
+## linseed   0 0 1 0 0
+## meatmeal  0 0 0 1 0
+## soybean   0 0 0 0 1
+## sunflower 0 0 0 0 0
+## Levels: casein horsebean linseed meatmeal soybean sunflower</code></pre>
 
 </div>
 </div>
@@ -280,8 +329,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="constraints.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="factor-coding.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -303,7 +352,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/wes-brooks/workshop_factors_emmeans/edit/master/01_factor_coding.Rmd",
+"link": "https://github.com/wes-brooks/workshop_factors_emmeans/edit/master/02_constraints.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -311,7 +360,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/wes-brooks/workshop_factors_emmeans/blob/master/01_factor_coding.Rmd",
+"link": "https://github.com/wes-brooks/workshop_factors_emmeans/blob/master/02_constraints.Rmd",
 "text": null
 },
 "download": null,

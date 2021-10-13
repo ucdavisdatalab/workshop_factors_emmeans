@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Factor coding, contrasts, and the emmeans package</title>
-  <meta name="description" content="Factor coding, contrasts, and the emmeans package" />
+  <title>3 The default | Factor coding, contrasts, and the emmeans package</title>
+  <meta name="description" content="3 The default | Factor coding, contrasts, and the emmeans package" />
   <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Factor coding, contrasts, and the emmeans package" />
+  <meta property="og:title" content="3 The default | Factor coding, contrasts, and the emmeans package" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://wes-brooks.github.io/workshop_factors_emmeans/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="wes-brooks/workshop_factors_emmeans" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Factor coding, contrasts, and the emmeans package" />
+  <meta name="twitter:title" content="3 The default | Factor coding, contrasts, and the emmeans package" />
   
   
   
@@ -24,15 +24,15 @@
 <meta name="author" content="Wesley Brooks" />
 
 
-<meta name="date" content="2021-10-13" />
+<meta name="date" content="2021-10-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="how-factors-are-coded-in-a-model.html"/>
 
-<link rel="next" href="factor-coding.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -143,22 +143,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.1</b> Learning goals:</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="factor-coding.html"><a href="factor-coding.html"><i class="fa fa-check"></i><b>1</b> Factor coding</a>
+<li class="chapter" data-level="1" data-path="factor-coding.html"><a href="factor-coding.html"><i class="fa fa-check"></i><b>1</b> Factor coding</a></li>
+<li class="chapter" data-level="2" data-path="how-factors-are-coded-in-a-model.html"><a href="how-factors-are-coded-in-a-model.html"><i class="fa fa-check"></i><b>2</b> How factors are coded in a model</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="factor-coding.html"><a href="factor-coding.html#how-factors-are-coded-in-a-model"><i class="fa fa-check"></i><b>1.1</b> How factors are coded in a model</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="factor-coding.html"><a href="factor-coding.html#the-linear-algebra-explanation"><i class="fa fa-check"></i><b>1.1.1</b> The linear algebra explanation</a></li>
+<li class="chapter" data-level="2.1" data-path="how-factors-are-coded-in-a-model.html"><a href="how-factors-are-coded-in-a-model.html#the-linear-algebra-explanation"><i class="fa fa-check"></i><b>2.1</b> The linear algebra explanation</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="factor-coding.html"><a href="factor-coding.html#the-default"><i class="fa fa-check"></i><b>1.2</b> The default</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="constraints.html"><a href="constraints.html"><i class="fa fa-check"></i><b>2</b> Constraints</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="constraints.html"><a href="constraints.html#contr.treatment"><i class="fa fa-check"></i><b>2.1</b> <code>contr.treatment</code></a></li>
-<li class="chapter" data-level="2.2" data-path="constraints.html"><a href="constraints.html#one-hot-encoding"><i class="fa fa-check"></i><b>2.2</b> “One-hot” encoding</a></li>
-<li class="chapter" data-level="2.3" data-path="constraints.html"><a href="constraints.html#contr.sum-sum-to-zero-constraints"><i class="fa fa-check"></i><b>2.3</b> <code>contr.sum</code>: sum-to-zero constraints</a></li>
-<li class="chapter" data-level="2.4" data-path="constraints.html"><a href="constraints.html#contr.poly"><i class="fa fa-check"></i><b>2.4</b> <code>contr.poly</code></a></li>
-<li class="chapter" data-level="2.5" data-path="constraints.html"><a href="constraints.html#contr.helmert-and-contr.sas"><i class="fa fa-check"></i><b>2.5</b> <code>contr.helmert</code> and <code>contr.SAS</code></a></li>
-</ul></li>
+<li class="chapter" data-level="3" data-path="the-default.html"><a href="the-default.html"><i class="fa fa-check"></i><b>3</b> The default</a></li>
 </ul>
 
       </nav>
@@ -176,34 +166,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Factor coding, contrasts, and the <code>emmeans</code> package</h1>
-<p class="author"><em>Wesley Brooks</em></p>
-<p class="date"><em>2021-10-13</em></p>
-</div>
-<div id="overview" class="section level1 unnumbered">
-<h1>Overview</h1>
-<p>I get a ton of questions from about factor variables in regression models. Two of the most common are:
-- Why is there a factor level missing from the results table for my regression model?
-- Why does my Stan model fail to “mix” or converge when this factor variable is included?</p>
-<p>I’m going to show you what is the deal with factor variables, in hopes that it will help you in your research, and that you can pass on the intuition when a colleague comes to you asking strange questions about factor variables.</p>
-<div id="learning-goals" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Learning goals:</h2>
-<ol style="list-style-type: decimal">
-<li>Understand why factor variables get handled in a special way</li>
-<li>Learn about the contrasts that are built into R</li>
-<li>Demonstrate the basics of the <code>emmeans</code> package for analyzing factors in model fits</li>
-</ol>
+<div id="the-default" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> The default</h1>
+<p>By default, R will drop the column that represents the first level of each factor. This is called a “treatment contrast” (more on contrasts later) or the set-to-zero constraint (because it is like constraining the <span class="math inline">\(A\)</span> effect to be zero):</p>
+<p><img src="images/eq4.png" alt="set to zero constraint" width="400"/></p>
+<p>Compare this to the model summary table, where the “first” level of the factor (casein) doesn’t appear. That’s because it is set to zero in order to estimate the model:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="the-default.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( lm1 )</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ feed, data = chickwts)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -123.909  -34.413    1.571   38.170  103.091 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    323.583     15.834  20.436  &lt; 2e-16 ***
+## feedhorsebean -163.383     23.485  -6.957 2.07e-09 ***
+## feedlinseed   -104.833     22.393  -4.682 1.49e-05 ***
+## feedmeatmeal   -46.674     22.896  -2.039 0.045567 *  
+## feedsoybean    -77.155     21.578  -3.576 0.000665 ***
+## feedsunflower    5.333     22.393   0.238 0.812495    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 54.85 on 65 degrees of freedom
+## Multiple R-squared:  0.5417, Adjusted R-squared:  0.5064 
+## F-statistic: 15.36 on 5 and 65 DF,  p-value: 5.936e-10</code></pre>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="how-factors-are-coded-in-a-model.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="factor-coding.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -225,7 +224,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/wes-brooks/workshop_factors_emmeans/edit/master/index.Rmd",
+"link": "https://github.com/wes-brooks/workshop_factors_emmeans/edit/master/01_factor_coding.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -233,7 +232,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/wes-brooks/workshop_factors_emmeans/blob/master/index.Rmd",
+"link": "https://github.com/wes-brooks/workshop_factors_emmeans/blob/master/01_factor_coding.Rmd",
 "text": null
 },
 "download": null,

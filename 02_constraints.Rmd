@@ -1,0 +1,54 @@
+# Constraints
+
+There are only a few constraints (R calls them "contrasts") to know:
+
+
+## `contr.treatment`
+The default. Sets a level of the factor to have zero effect. You saw an example of the design matrix just a moment ago. Take a look at the design matrix according to R:
+
+```{r}
+contrasts( chickwts$feed )
+```
+
+
+## "One-hot" encoding
+You can do this yourself by removing the intercept. You gain interpretability, but now the significance level is telling you whether the factor level mean is different from zero (you usually want to know if it is different from average).
+
+<img src="images/eq5.png" alt="one hot encoding design matrix" width="400"/>
+
+```{r}
+summary( lm( weight ~ feed - 1, data=chickwts ))
+```
+
+## `contr.sum`: sum-to-zero constraints
+With sum-to-zero constraint, the factor level effects must add up to zero. Thus, the intercept represents the average of the fitted factor effects, and the final level is calculated by adding together all of the shown estimates.
+
+<img src="images/eq6.png" alt="sum to zero design matrix" width="400"/>
+
+
+You can set the contrasts as an attribute of the data or pass it to the `lm()` function.
+
+
+```{r}
+contrasts( chickwts$feed ) = contr.sum
+chickwts$feed
+summary( lm(weight ~ feed, data=chickwts) )
+```
+
+## `contr.poly`
+This one is for ordered factors, and gets a bit more complicated. Beyond today's scope.
+
+## `contr.helmert` and `contr.SAS`
+Used in special situations that I wont get into, but you can infer their workings by looking at how they set up the design matrix for our example:
+
+```{r}
+contrasts( chickwts$feed ) = contr.helmert
+chickwts$feed
+```
+
+```{r}
+contrasts( chickwts$feed ) = contr.SAS
+chickwts$feed
+```
+
+
