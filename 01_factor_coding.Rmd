@@ -90,7 +90,7 @@ You can set the contrasts as an attribute of the data or pass it to the `lm()` f
 ```{r}
 # set the feed variable to use sum-to-zero constraint
 contrasts( chickwts$feed ) = contr.sum
-chickwts$feed
+contrasts( chickwts$feed )
 
 # re-fit the linear model 
 lm_stz = lm(weight ~ feed, data=chickwts)
@@ -109,13 +109,13 @@ Used in special situations that I wont get into, but you can infer their working
 ```{r}
 # set the helmert contrast and look at its design
 contrasts( chickwts$feed ) = contr.helmert
-chickwts$feed
+contrasts( chickwts$feed )
 ```
 
 ```{r}
 # set feed to use the SAS contrast and look at its design
 contrasts( chickwts$feed ) = contr.SAS
-chickwts$feed
+contrasts( chickwts$feed )
 ```
 
 
@@ -162,7 +162,7 @@ In order to illustrate a couple other features of `emmeans`, we must have a more
 # load the mtcars data
 data( mtcars )
 
-# code cyl, gear, and am as factors:
+# code cyl, and am as factors:
 mtcars$cyl = as.factor( mtcars$cyl )
 mtcars$am = as.factor( mtcars$am )
 
